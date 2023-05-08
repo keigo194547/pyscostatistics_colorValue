@@ -24,7 +24,6 @@ public class RandomColorController : MonoBehaviour
     {
         redSquareInitialColor = redSquare.color;
         shuffledBrightnessValues = new List<int>(brightnessValues);
-        ShuffleBrightnessValues();
         finishText.gameObject.SetActive(false);
     }
 
@@ -53,14 +52,10 @@ public class RandomColorController : MonoBehaviour
         if (loopCount >= maxLoops)
         {
             loopCount = 0;
-            ShuffleBrightnessValues();
         }
     }
 
-    void ShuffleBrightnessValues()
-    {
-        // Implement your logic to shuffle brightness values
-    }
+   
 
     Color AdjustColor(Color original, float brightness)
     {
