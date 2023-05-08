@@ -15,7 +15,7 @@ public class RandomColorController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI brightnessOutput;
     [SerializeField] private TextMeshProUGUI finishText;
 
-    private List<int> brightnessValues = new List<int> { 0, 30, 60, 90, 120, 150, 180, 210, 240, 256 };
+    private List<int> brightnessValues = new List<int> {25, 51, 76, 102, 128, 153, 179, 204};
     private List<int> shuffledBrightnessValues;
     private Color redSquareInitialColor;
     private int currentIndex = 0;
