@@ -260,6 +260,7 @@ MonoBehaviour:
   changeButton: {fileID: 1524325552}
   brightnessOutput: {fileID: 505633850}
   finishText: {fileID: 1784535323}
+  setCount: 5
 --- !u!1 &381309509
 GameObject:
   m_ObjectHideFlags: 0
