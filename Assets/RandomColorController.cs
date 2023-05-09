@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.IO;
+using System.Linq;
 
 public class RandomColorController : MonoBehaviour
 {
@@ -11,8 +12,9 @@ public class RandomColorController : MonoBehaviour
     [SerializeField] private Button changeButton;
     [SerializeField] private TextMeshProUGUI brightnessOutput;
     [SerializeField] private TextMeshProUGUI finishText;
+    [SerializeField] private int setCount = 10;
 
-    private List<int> brightnessValues = new List<int> { 25, 51, 76, 102, 128, 153, 179, 204 };
+    private List<int> brightnessValues = new List<int> {51, 76, 102, 128, 153, 179, 204 };
     private List<int> shuffledBrightnessValues;
     private Color redSquareInitialColor;
     private int currentIndex = 0;
@@ -20,18 +22,44 @@ public class RandomColorController : MonoBehaviour
     private int maxLoops = 4;
     private int decideButtonClickCount = 0;
 
+
     void Start()
     {
         redSquareInitialColor = redSquare.color;
-        shuffledBrightnessValues = new List<int>(brightnessValues);
+        List<int> repeatedValues = new List<int> { };
+        for (int i = 0; i < setCount; i++)
+        {
+            repeatedValues.AddRange(brightnessValues);
+        }
+
+
+        shuffledBrightnessValues = new List<int>(repeatedValues);
+        System.Random random = new System.Random();
+        int n = shuffledBrightnessValues.Count;
+        while (n > 1)
+        {
+            n--;
+            int k = random.Next(n + 1);
+            int value = shuffledBrightnessValues[k];
+            shuffledBrightnessValues[k] = shuffledBrightnessValues[n];
+            shuffledBrightnessValues[n] = value;
+        }
+
+        Debug.Log("Shuffled Brightness Values Count: " + shuffledBrightnessValues.Count);
+
+        Debug.Log(string.Join(",", shuffledBrightnessValues.Select(n => n.ToString())));
+
         finishText.gameObject.SetActive(false);
     }
 
+
     public void ChangeBrightness()
     {
-        int randomIndex = Random.Range(0, brightnessValues.Count);
-        float brightness = brightnessValues[randomIndex] / 256f;
+        int randomIndex = 0;
+        float brightness = shuffledBrightnessValues[randomIndex] / 256f;
         redSquare.color = AdjustColor(redSquareInitialColor, brightness);
+        randomIndex++;
+        print(randomIndex);
     }
 
     public void DecideBrightness(string tag)
@@ -43,13 +71,13 @@ public class RandomColorController : MonoBehaviour
 
         decideButtonClickCount++;
 
-        if (decideButtonClickCount >= 4)
+        if (decideButtonClickCount >= shuffledBrightnessValues.Count)
         {
             finishText.gameObject.SetActive(true);
             SaveDataToCSV();
         }
 
-        if (loopCount >= maxLoops)
+        if (loopCount >= shuffledBrightnessValues.Count)
         {
             loopCount = 0;
         }
